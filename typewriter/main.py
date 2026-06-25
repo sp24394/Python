@@ -6,6 +6,10 @@ _base = os.path.dirname(os.path.abspath(__file__))
 pygame.mixer.init()
 pygame.mixer.set_num_channels(24)
 
+# good speeds:
+#   undertale - 1
+#   animalese - 0.45
+
 def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
     text = str(text)
 
@@ -79,8 +83,8 @@ def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
     if soundfont and pause and current_sound: time.sleep(current_sound.get_length() + 0.05)
 
 
-v = "default"
+v = "swkbd_bonyari"
 while True:
-    speak(f"I am perfectly willing to fix a good number of these highly complex and perplexing phrases,| and my life will be absolutely wonderful!|||", 1, v, f"{Fore.WHITE}{Back.BLUE}")
+    speak(f"I am perfectly willing to fix a good number of these highly complex and perplexing phrases,| and my life will be absolutely wonderful!||| 0|1|2|3|4|5|6|7|8|9|10", 0.45, v, f"{Fore.WHITE}{Back.BLUE}")
     sys.stdout.write(f"\nSoundfonts: {sorted(os.listdir(os.path.join(_base, "sounds")))}\n")
     v = input("Pick a new soundfont: ")
