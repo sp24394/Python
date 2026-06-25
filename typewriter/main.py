@@ -16,7 +16,7 @@ def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
             speak(soundfont, 1, "default", f"{Fore.BLACK}{Back.RED}{Style.BRIGHT}", False)
             speak(f"' doesn't exist. Available soundfonts:", 1, "default", f"{Fore.BLACK}{Back.RED}")
             time.sleep(0.3)
-            for i in os.listdir(os.path.join(_base, "sounds")):
+            for i in sorted(os.listdir(os.path.join(_base, "sounds"))):
                 sys.stdout.write("\n\t ")
                 pygame.mixer.Sound(os.path.join(_base, "sounds", "default_alt", "0.wav")).play()
                 speak(f"- '{i}'", 4, None, f"{Fore.BLACK}{Back.RED}{Style.BRIGHT}", False)
@@ -37,11 +37,6 @@ def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
             for i in os.listdir(directory):
                 sounds.append(pygame.mixer.Sound(os.path.join(directory, i)))
 
-    multipliers = {
-    ",": 0.2,
-    ".": 0.11
-    }
-
     blacklist = [
         "\n",
         "\t"
@@ -51,26 +46,37 @@ def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
     sys.stdout.flush()
 
     for i in range(len(text)):
-        sys.stdout.write(text[i])
-        sys.stdout.flush()
-        if soundfont and not text[i].lower() in blacklist:
-            if not soundfont_is_abc:
-                if len(sounds) == 1:
-                    current_sound = sounds[0]
-                    current_sound.play()
-                else:
-                    current_sound = random.choice(sounds)
-                    current_sound.play()
-            else:
-                if text[i].lower() in sounds:
-                    current_sound = sounds[text[i].lower()]
-                    current_sound.play()
+        skip = False
+        if i >= len(text):
+            break
 
-        if not text[i].lower() in blacklist and i < len(text)-1 and multipliers.get(text[i], True) != None:
-            time.sleep(((1/30)/multipliers.get(text[i], 1))/speed)
-    
+        if text[i] == "|":
+            skip = True
+            time.sleep(0.2)
+
+        if skip:
+            skip = False
+        else:
+            sys.stdout.write(text[i])
+            sys.stdout.flush()
+            if soundfont and not text[i].lower() in blacklist:
+                if not soundfont_is_abc:
+                    if len(sounds) == 1:
+                        current_sound = sounds[0]
+                        current_sound.play()
+                    else:
+                        current_sound = random.choice(sounds)
+                        current_sound.play()
+                else:
+                    if text[i].lower() in sounds:
+                        current_sound = sounds[text[i].lower()]
+                        current_sound.play()
+
+            if not text[i].lower() in blacklist and i < len(text)-1:
+                time.sleep((1/30)/speed)
+        
     if mods: sys.stdout.write(Style.RESET_ALL); sys.stdout.flush()
     if soundfont and pause and current_sound: time.sleep(current_sound.get_length() + 0.05)
 
 
-speak(f"Hello, world!", 0.6, "asriel", f"{Fore.WHITE}{Back.BLUE}")
+speak(f"Hello,| world!||", 0.6, "asriel", f"{Fore.WHITE}{Back.BLUE}")
