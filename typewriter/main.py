@@ -79,4 +79,8 @@ def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
     if soundfont and pause and current_sound: time.sleep(current_sound.get_length() + 0.05)
 
 
-speak(f"Hello,| world!||", 0.6, "asriel", f"{Fore.WHITE}{Back.BLUE}")
+v = "default"
+while True:
+    speak(f"I am perfectly willing to fix a good number of these highly complex and perplexing phrases,| and my life will be absolutely wonderful!|||", 1, v, f"{Fore.WHITE}{Back.BLUE}")
+    sys.stdout.write(f"\nSoundfonts: {sorted(os.listdir(os.path.join(_base, "sounds")))}\n")
+    v = input("Pick a new soundfont: ")
