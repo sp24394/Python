@@ -19,13 +19,12 @@ def speak(text, speed = 1, soundfont = None, mods = "", pause = True):
         if not os.path.exists(directory):
             speak(f"\tSoundfont '", 1, "default", f"{Fore.BLACK}{Back.RED}", False)
             speak(soundfont, 1, "default", f"{Fore.BLACK}{Back.RED}{Style.BRIGHT}", False)
-            speak(f"' doesn't exist. Available soundfonts:", 1, "default", f"{Fore.BLACK}{Back.RED}")
-            time.sleep(0.3)
+            speak(f"' doesn't exist.| Available soundfonts:||", 1, "default", f"{Fore.BLACK}{Back.RED}")
             for i in sorted(os.listdir(os.path.join(_base, "sounds"))):
                 sys.stdout.write("\n\t ")
                 pygame.mixer.Sound(os.path.join(_base, "sounds", "default_alt", "0.wav")).play()
                 speak(f"- '{i}'", 4, None, f"{Fore.BLACK}{Back.RED}{Style.BRIGHT}", False)
-            time.sleep(0.2)
+            time.sleep(0.15)
             return
 
         soundfont_is_abc = False
