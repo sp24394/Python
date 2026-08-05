@@ -57,6 +57,7 @@ def on_release(key):
         return False
 
     try:
+        if key.char == "0": return
         pos = int(key.char)-1
         if board[pos] == 0:
             board[pos] = turn
