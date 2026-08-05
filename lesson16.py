@@ -21,14 +21,29 @@ def print_board(b, e=False):
 def check_winner(b):
     full = True
     win = 0
-    for i in b:
-        if i == 0: full = False
+    i = -1
+    for v in b:
+        i += 1
+        if v == 0: full = False
         else:
-            pass # TODO STUFF HERE
+            if not i % 3:
+                if b[i+1] == v and b[i+2] == v:
+                    return v
+            if i <= 2:
+                if b[i+3] == v and b[i+6] == v:
+                    return v
+            if i == 0:
+                if b[i+4] == v and b[i+8] == v:
+                    return v
+            if i == 2:
+                if b[i+2] == v and b[i+4] == v:
+                    return v
+            
     
     if full:
         clear()
         print_board(b)
+        win = 3
     
     return win
 
@@ -51,7 +66,7 @@ def on_release(key):
         else:
             clear()
             print_board(board)
-            print(f"\n{player(turn, False)} wins!" if win != 3 else "\nDraw!")
+            print(f"\n{player(win, False)} wins!{Style.RESET_ALL}" if win != 3 else "\nDraw!")
             return False
     except Exception as e:
         clear(); print_board(board, True)
