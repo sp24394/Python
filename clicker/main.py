@@ -1,17 +1,21 @@
 # idle game or something
-import os
+import os, time
     #TODO read logo.txt
 def logo():
     scriptPath = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(scriptPath, "logo.txt")
     with open(path, "r") as file:
-        return file.read()
+        return file.read().split("\n&&\n")
 
 def clear():
     print("\033[H\033[J", end="")
 
 def start():
-    clear()
-    print(logo())
+    anim = logo()
+    for i in anim:
+        clear()
+        print(i)
+        time.sleep(0.5/len(anim))
+
 
 start()
