@@ -15,7 +15,7 @@ def start():
     for i in anim:
         clear()
         print(i)
-        time.sleep(0.5/len(anim))
+        time.sleep(0.2/len(anim))
 
 
 start()
