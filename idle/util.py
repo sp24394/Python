@@ -1,6 +1,11 @@
-import os, sys, json
+import os, sys, json, io
 
 last = ""
+
+sys.stdout = io.TextIOWrapper(
+    open(sys.stdout.fileno(), "wb", buffering=0),
+    write_through=True
+)
 
 # 0: black, 1: red, 2: green, 3: yellow,
 # 4: blue, 5: magenta, 6: cyan, 7: white
@@ -53,23 +58,33 @@ def getchar():
         return {"\x1b": "ESC", "\x1b[A": "UP", "\x1b[B": "DOWN",
         "\x1b[C": "RIGHT", "\x1b[D": "LEFT", "\r": "ENTER"}.get(ch, ch)
 
-def write(*args):
+def write(flush=False, *args):
     sys.stdout.write(" ".join([str(item) for item in args]))
-    sys.stdout.flush()
+    if flush: sys.stdout.flush()
 
 def clear(by=""):
-    write("\033[2J\033[3J\033[H" + str(by))
+    write(True, "\033[2J\033[3J\033[H" + str(by))
 
 def blit(*layers):
-    base = list(layers[0])
-    for layer in layers[1:]:
-        for i, ch in enumerate(layer):
-            if ch != " ":
-                if i < len(base):
-                    base[i] = ch
-                else:
-                    base.append(ch)
-    return "".join(base)
+    grids = [layer.split("\n") for layer in layers]
+    base = grids[0]
+
+    for grid in grids[1:]:
+        for row_i, row in enumerate(grid):
+            if row_i >= len(base):
+                base.append(row)
+                continue
+
+            base_row = list(base[row_i])
+            for col_i, ch in enumerate(row):
+                if ch != " ":
+                    if col_i < len(base_row):
+                        base_row[col_i] = ch
+                    else:
+                        base_row.append(ch)
+            base[row_i] = "".join(base_row)
+
+    return "\n".join(base)
 
 def render(frame):
     clear(frame)
@@ -77,8 +92,12 @@ def render(frame):
 
 def container(width, height, y=1):
     tx, ty = termsize()
-    c = "\n"*y + ("+" + "-"*(width) + "+").center(tx)
-    c += ("\n" + ("|" + " "*(width) + "|").center(tx))*height
-    c += "\n"*y + ("+" + "-"*(width) + "+").center(tx)
+    
+    top = ("+" + "-"*width + "+").center(tx)
+    row = ("|" + " "*width + "|").center(tx)
+    
+    c = "\n"*y + bold() + top + reset()
+    c += ("\n" + bold() + row + reset()) * height
+    c += "\n"*y + bold() + top + reset()
 
     return c

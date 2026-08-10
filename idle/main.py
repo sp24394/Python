@@ -1,8 +1,11 @@
-import util as u, time
+import util as u, art, time
 
 u.clear()
+lastsize = None
 
 while True:
-    tx, ty = u.termsize()
-    u.render(u.blit(u.container(tx - 8, ty - 4)))
-    time.sleep(0.01)
+    size = u.termsize()
+    if size != lastsize:
+        lastsize = size
+        tx, ty = size
+        u.render(u.blit(u.container(tx - 8, ty - 4)))
