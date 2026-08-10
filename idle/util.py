@@ -117,5 +117,5 @@ def init():
 def ls(dc):
     c = ""
     for i, v in dc.items():
-        c += str(i) + ": " + str(v) + "\n"
+        c += str(v["prefix"]) + str(v["value"]) + (str(("/" + v["max"])) if v["max"] != -1 else "") + str(v["suffix"])
     return c

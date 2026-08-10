@@ -3,7 +3,12 @@ import util as u, art, time
 u.init()
 
 data = {
-    "credits": 10
+    "credits": {
+        "prefix": "",
+        "suffix": "c",
+        "value": 10,
+        "max": -1
+    }
 }
 
 u.clear()
