@@ -1,4 +1,4 @@
-import os, sys, json, io
+import os, sys, json, io, signal
 
 last = ""
 
@@ -87,8 +87,11 @@ def blit(*layers):
     return "\n".join(base)
 
 def render(frame):
-    clear(frame)
-    last = frame
+    global last
+
+    if frame != last:
+        clear(frame)
+        last = frame
 
 def container(width, height, y=1):
     tx, ty = termsize()
@@ -96,8 +99,23 @@ def container(width, height, y=1):
     top = ("+" + "-"*width + "+").center(tx)
     row = ("|" + " "*width + "|").center(tx)
     
-    c = "\n"*y + bold() + top + reset()
-    c += ("\n" + bold() + row + reset()) * height
-    c += "\n"*y + bold() + top + reset()
+    c = "\n"*y + top
+    c += ("\n" + row) * height
+    c += "\n" + top
 
+    return c
+
+def pos(content, x, y):
+    content = content.splitlines()
+    for i, v in enumerate(content):
+        content[i] = " "*x + v
+    return "\n"*y + "".join(content)
+
+def init():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+def ls(dc):
+    c = ""
+    for i, v in dc.items():
+        c += str(i) + ": " + str(v) + "\n"
     return c

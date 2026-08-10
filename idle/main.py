@@ -1,5 +1,11 @@
 import util as u, art, time
 
+u.init()
+
+data = {
+    "credits": 10
+}
+
 u.clear()
 lastsize = None
 
@@ -8,4 +14,5 @@ while True:
     if size != lastsize:
         lastsize = size
         tx, ty = size
-        u.render(u.blit(u.container(tx - 8, ty - 4)))
+        ty = max(ty, 16)
+    u.render(u.blit(u.container(tx - 8, ty - 4), u.pos(u.ls(data), 5, 2)))
