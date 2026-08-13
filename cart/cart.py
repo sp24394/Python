@@ -20,16 +20,26 @@ cart = read_cart()
 
 
 def add_item(item, cost, qty):
-    pass
+    item = item.lower()
+    cart.update({item: {"cost": cost, "qty": (cart.get(item).get("qty") if cart.get(item) else 0) + qty}})
 
 def get_cost():
-    pass
+    c = 0
+    for i, v in cart.items():
+        c += v.get("cost") * v.get("qty")
+    return c
 
 def view_cart():
-    pass
+    for i in cart:
+        print(i)
+        for v, v2 in cart.get(i).items():
+            print(f" - {v}: {v2}")
+        print("")
 
 def remove_item(item, qty):
     pass
 
 def update_item(item, price, qty):
     pass
+
+view_cart()
