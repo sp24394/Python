@@ -6,5 +6,13 @@
   "robux": {
     "cost": 30,
     "qty": 54
+  },
+  "garlic bread": {
+    "cost": 3.29,
+    "qty": 2
+  },
+  "tip top chocolate chip ice cream (1.5l)": {
+    "cost": 6.49,
+    "qty": 1
   }
 }
