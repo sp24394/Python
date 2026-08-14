@@ -1,14 +1,10 @@
 {
-  "robux": {
-    "cost": 20,
-    "qty": 6
-  },
-  "POOP": {
-    "cost": 20,
-    "qty": 3
-  },
   "orange": {
     "cost": 20,
     "qty": 9
+  },
+  "robux": {
+    "cost": 30,
+    "qty": 54
   }
 }

@@ -37,9 +37,14 @@ def view_cart():
         print("")
 
 def remove_item(item, qty):
-    pass
+    item = item.lower()
+    old_qty = (cart.get(item) or {}).get("qty")
+    if old_qty and old_qty > qty:
+        cart.update({item: {"qty": (cart.get(item).get("qty") if cart.get(item) else 0) - qty}})
+    elif cart.get(item):
+        cart.pop(item)
 
-def update_item(item, price, qty):
-    pass
-
-view_cart()
+def update_item(item, cost, qty):
+    item = item.lower()
+    if cart.get(item):
+        cart.update({item: {"cost": cost, "qty": qty}})
