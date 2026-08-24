@@ -25,6 +25,7 @@ film were locals? (from New Zealand)""",
 
 #shuffle questions
 random.shuffle(q)
+
 for i in q:
     if i.get("multi") and not type(i.get("multi")) is list:
         list(i.get("multi"))
@@ -37,8 +38,11 @@ total_correct = 0
 total_asked = 0
 
 def header(tc:int, ta:int):
+    """Returns a styled header.
+    \ntc = total correct
+    \nta = total asked"""
     return f"""{Fore.BLUE}{Style.BRIGHT}\
-Question 1/{len(q)}\t{Fore.RED}{tc}/{ta} correct"""
+Question {ta+1}/{len(q)}\t{Fore.RED}{tc}/{ta} correct"""
 
 def ask(question: dict, qnumber: int = 0):
     '''Asks a question using values from a dictionary;
@@ -62,6 +66,7 @@ def ask(question: dict, qnumber: int = 0):
 
     unanswered = True
     correct = False
+    extra_text = None
     while unanswered:
         # clear terminal, print header
         clear()
@@ -78,6 +83,8 @@ def ask(question: dict, qnumber: int = 0):
         else:
             unanswered = False
 
+        if extra_text: print(extra_text)
+
         print(f"{Style.NORMAL}Your answer: {Style.BRIGHT}", end="")
 
         #get answer input, removing whitespace at start/end
@@ -86,14 +93,34 @@ def ask(question: dict, qnumber: int = 0):
 
         #if this was a multichoice, check if this is a valid answer
         if question.get("multi"):
-            chosen_index = -1
+            #try to convert input to a number; if possible and the index
+            #is in the range of answers, set the question to answered.
+            #otherwise, if the input is not a number, set the question
+            #to answered.
             try:
-                chosen_index = int(inp)
-            except:
-                pass
+                if int(inp) - 1 <= len(question.get("multi")) - 1:
+                    if int(inp) >= 1:
+                        unanswered = False
+                        inp = int(inp) - 1
 
-            correct = inp == question.get("answer").lower()
-            correct = correct or question.get("multi").get(chosen_index) == question.get("answer")
+            except ValueError:
+                unanswered = False
+                pass
+            
+            if not unanswered:
+                if type(inp) == int:
+                    if question.get("answer") == question.get("multi")[inp]:
+                        correct = True
+                else:
+                    if inp in question.get("multi"):
+                        unanswered = False
+                        if question.get("answer").lower() == inp:
+                            correct = True
+                    else:
+                        unanswered = True
+
+            if unanswered:
+                extra_text = f"'{inp}' is not a valid answer!"
 
         else:
             correct = inp == question.get("answer").lower()
@@ -105,9 +132,9 @@ def ask(question: dict, qnumber: int = 0):
     COUNTDOWN = 2
     if correct:
         total_correct += 1
-        print(f"""{header(total_correct, total_asked)}\n{Fore.BLUE}CORRECT!""")
+        print(f"{header(total_correct, total_asked)}\n{Fore.BLUE}CORRECT!")
     else:
-        COUNTDOWN = 4
+        COUNTDOWN = 5
         print(f"{header(total_correct, total_asked)}\n{Fore.RED}INCORRECT")
         print(f"{Style.NORMAL}{question["ex"]}{Style.BRIGHT}")
 
