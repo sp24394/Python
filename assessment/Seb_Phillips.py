@@ -246,7 +246,7 @@ try:
     else:
         print(f"{Fore.RED}You failed... ", end="")
     print(f"""{Fore.WHITE}You answered {((total_correct/total_asked)*100):.1f}% \
-    of questions correctly.\n""")
+of questions correctly.\n""")
 
 except KeyboardInterrupt:
     clear()
