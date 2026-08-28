@@ -1,4 +1,4 @@
-from colorama import Fore, Back, Style; import time; import random
+from colorama import Fore, Style; import time; import random
 
 # countdown timer after a question is answered
 BASE_COUNTDOWN = 2
@@ -19,10 +19,10 @@ q = [
         "ex": "Jack Black played Steve."
     },
     {
-        "text": "Who plays the character Garret \"The Garbage Man\" Garrison?",
+        "text": 'Who plays the character Garret "The Garbage Man" Garrison?',
         "answer": ["Jason Momoa", "Jason Mamoa"],
-        "ex": """Jason Momoa played Garret \"The Garbage Man\" Garrison.
-He's also a New Zealander!"""
+        "ex": '''Jason Momoa played Garret "The Garbage Man" Garrison.
+He's also a New Zealander!'''
     },
     {
         "text": """What percentage of people who worked on the \
@@ -162,7 +162,7 @@ def ask(question: dict):
         print(header(total_correct, total_asked, question_num))
 
         # print the question
-        print(f"{Fore.WHITE}{question["text"]}")
+        print(f"{Fore.WHITE}{question['text']}")
 
         # decide how to handle the question based
         # on whether or not it is multichoice
@@ -232,7 +232,7 @@ def ask(question: dict):
 \n{Fore.RED}INCORRECT""")
         # print some info on the answer
         print(f"""{Style.NORMAL}\
-{question.get("ex", question["answer"])}{Style.BRIGHT}""")
+{question.get('ex', question['answer'])}{Style.BRIGHT}""")
 
     # countdown to next question
     for i in range(countdown):
