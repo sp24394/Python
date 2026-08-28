@@ -6,6 +6,11 @@ BASE_COUNTDOWN = 2
 # whether or not the questions should be shuffled first
 SHUFFLE = True
 
+# do question related stuff first, it just makes it easier to
+# edit the questions if i have them all at the top
+# and it also makes it easier to create the functions if i have
+# a list of questions to refer to first
+
 # capitalization in answers is already handled
 q = [
     {
@@ -54,7 +59,7 @@ release July 23rd, 2027.""",
     },
     {
         "text": "How many directors did the movie have BEFORE the final one?",
-        "answer": "3",
+        "answer": 3,
         "ex": """The film had three other directors before settling on their \
 final one, including Shawn Levy, Rob McElhenney, and Peter Sollett.\
 \nEventually, they settled on Jared Hess."""
@@ -77,7 +82,9 @@ the movie during opening weekend? (USD)""",
                   "~$310 million", "~$340 million"]
     }
 ]
-# QUESTIONS STUFF
+# this is still question stuff, just validates multichoices and
+# shuffles the questions
+
 # shuffle questions
 if SHUFFLE: random.shuffle(q)
 # converts any multichoices to lists if they arent already...
@@ -86,12 +93,12 @@ for i in q:
     if not type(i.get("multi", [])) is list:
         i["multi"] = [i["multi"]]
 
-
 # get variables ready
 total_correct = 0
 total_asked = 0
 question_num = 0
 
+# now the main stuff
 def clear():
     """Clears the terminal"""
     print("\033[H\033[J", end="")
@@ -245,9 +252,10 @@ try:
         print(f"{Fore.BLUE}You passed! ", end="")
     else:
         print(f"{Fore.RED}You failed... ", end="")
-    print(f"""{Fore.WHITE}You answered {((total_correct/total_asked)*100):.1f}% \
-of questions correctly.\n""")
+    print(f"""{Fore.WHITE}You answered \
+{((total_correct/total_asked)*100):.1f}% of questions correctly.\n""")
 
+# clean exit on keyboardinterrupt instead of erroring
 except KeyboardInterrupt:
     clear()
     print(Style.RESET_ALL, end="")
